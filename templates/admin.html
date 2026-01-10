@@ -1,40 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zemy Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-50 font-sans">
-
-    <nav class="bg-slate-900 text-white p-4 shadow-lg">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold text-blue-400"><i class="fas fa-user-shield mr-2"></i>Zemy Admin</h1>
-            <div class="space-x-4">
-                <a href="/" class="hover:text-blue-300 transition">View Live Site</a>
-                <a href="/logout" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-sm font-bold">Logout</a>
-            </div>
-        </div>
-    </nav>
-
-    <div class="max-w-6xl mx-auto py-10 px-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                <p class="text-gray-500 text-sm font-bold uppercase">Active Codes</p>
-                <h3 class="text-4xl font-black text-slate-800">{{ codes|length }}</h3>
-            </div>
+<body class="bg-slate-50 p-4 md:p-10">
+    <div class="max-w-3xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-2xl font-bold text-slate-800">Bulk Code Manager</h1>
+            <a href="/" class="text-blue-600 hover:underline">View Site</a>
         </div>
 
-        <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-100 mb-10">
-            <h2 class="text-2xl font-bold mb-6 text-slate-800">Add New Promo Code</h2>
-            <form action="/add" method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <input type="text" name="name" placeholder="Referrer Name (e.g. John D.)" required 
-                       class="border border-gray-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
-                <input type="text" name="code" placeholder="Promo Code (e.g. SOPHIA20)" required 
-                       class="border border-gray-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none font-mono transition">
-                <button type="submit" class="bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border mb-8">
+            <h2 class="font-bold mb-4 text-slate-700">Paste Codes (One per line)</h2>
+            <form action="/add" method="POST">
+                <textarea name="bulk_codes" rows="6" placeholder="SOPHIA20&#10;SAVE50&#10;WELCOME10" 
+                          class="w-full border rounded-xl p-4 font-mono focus:ring-2 focus:ring-blue-500 outline-none mb-4"></textarea>
+                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition">
+                    Import All Codes
+                </button>
+            </form>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-slate-50 border-b">
+                    <tr>
+                        <th class="p-4 font-bold text-slate-600">Active Promo Code</th>
+                        <th class="p-4 text-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y">
+                    {% for c in codes %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="p-4 font-mono font-bold text-blue-600">{{ c.code }}</td>
+                        <td class="p-4 text-right">
+                            <a href="/delete/{{ c.id }}" class="text-red-500 hover:bg-red-50 px-3 py-1 rounded-lg transition">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>                <button type="submit" class="bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition">
                     <i class="fas fa-plus mr-2"></i>Add to Site
                 </button>
             </form>
