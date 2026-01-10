@@ -14,6 +14,10 @@ h1 { font-size:2.5em; background:linear-gradient(135deg,#3b82f6,#8b5cf6); -webki
 .code { font-family:monospace; font-size:1.2em; font-weight:600; color:#f1f5f9; }
 .clicks { background:linear-gradient(135deg,#10b981,#059669); color:white; padding:8px 16px; border-radius:20px; font-weight:600; font-size:0.9em; }
 @media (max-width:600px) { .code-item { flex-direction:column; text-align:center; gap:12px; } }
+.empty { text-align:center; padding:60px 40px; color:#64748b; }
+.empty h2 { font-size:2em; margin-bottom:16px; }
+.admin-link { color:#3b82f6; text-decoration:none; padding:12px 24px; background:#1e293b; border-radius:12px; font-weight:600; transition:all 0.3s; }
+.admin-link:hover { background:#3b82f6; color:#020617; }
 </style>
 </head>
 <body>
@@ -22,18 +26,35 @@ h1 { font-size:2.5em; background:linear-gradient(135deg,#3b82f6,#8b5cf6); -webki
 <div class="codes">
 {% if codes %}
 {% for c in codes %}
-<div class="code-item" tabindex="0">
+<div class="code-item" tabindex="0" title="Click to copy">
 <div class="code">{{ c.code }}</div>
-<div class="clicks">{{ c.clicks }} {{ 'use'|pluralize(c.clicks) }}</div>
+<div class="clicks">{{ c.clicks }} {{ 'use' if c.clicks == 1 else 'uses' }}</div>
 </div>
 {% endfor %}
 {% else %}
-<div style="text-align:center; padding:40px; color:#64748b;">
-<p>🚀 No codes available yet</p>
-<p>Admin panel: <a href="/manage-zemy-codes" style="color:#3b82f6;">/manage-zemy-codes</a></p>
+<div class="empty">
+<h2>🚀 No codes yet</h2>
+<p>Admin panel coming soon...</p>
+<a href="/manage-zemy-codes" class="admin-link">🔧 Manage Codes</a>
 </div>
 {% endif %}
 </div>
+</div>
+
+<script>
+document.addEventListener("copy", (e) => {
+  const code = window.getSelection()?.toString().trim();
+  if (code) {
+    fetch("/track-copy", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({code})
+    }).catch(console.error);
+  }
+});
+</script>
+</body>
+</html>
 </div>
 
 <script>
