@@ -1,40 +1,46 @@
-import os
-import json
-import time
-import requests
-from flask import Flask, render_template, request, redirect, url_for, session, Response
-from werkzeug.security import check_password_hash
-from datetime import timedelta
-import psycopg2
-import psycopg2.extras
+< script >
+  let copyCooldown = 0;
+const container = document.getElementById('codes-container');
+const toast = document.getElementById('toast');
 
-app = Flask(__name__)
+// Live polling every 2s
+async function pollCodes() {
+  try {
+    const res = await fetch('/api/codes');
+    const codes = await res.json();
+    // Update DOM with new counts (preserve animations)
+    codes.forEach(c => {
+      const item = container.querySelector(`[data-code="${c.code}"]`);
+      if (item && parseInt(item.dataset.clicks) !== c.clicks) {
+        item.dataset.clicks = c.clicks;
+        item.classList.add('updating');
+        const clicksEl = item.querySelector('.clicks');
+        clicksEl.textContent = `${c.clicks} ${c.clicks === 1 ? 'copy' : 'copies'}`;
+        setTimeout(() => item.classList.remove('updating'), 600);
+      }
+    });
+  } catch (e) {}
+  setTimeout(pollCodes, 2000);
+}
+pollCodes();
 
-# --- CONFIG ---
-app.secret_key = os.environ.get("SECRET_KEY", "dev_fallback")
-app.permanent_session_lifetime = timedelta(days=7)
-
-ADMIN_USER = os.environ.get("ADMIN_USER", "MasterZanix")
-ADMIN_PASSWORD_HASH = os.environ.get("ADMIN_PASSWORD_HASH")
-
-TG_TOKEN = os.environ.get("TG_TOKEN")
-TG_CHAT_ID = os.environ.get("TG_CHAT_ID")
-
-DATABASE_URL = os.environ.get("DATABASE_URL")
-
-# --- DATABASE HELPERS ---
-def get_db():
-    return psycopg2.connect(
-        DATABASE_URL,
-        sslmode="require",
-        cursor_factory=psycopg2.extras.DictCursor
-    )
-
-def init_db():
-    try:
-        with get_db() as con:
-            with con.cursor() as cur:
-                cur.execute('CREATE TABLE IF NOT EXISTS codes (id SERIAL PRIMARY KEY, code TEXT UNIQUE NOT NULL, clicks INTEGER DEFAULT 0)')
+// Copy handler (unchanged)
+document.addEventListener('copy', (e) => {
+  const now = Date.now();
+  if (now - copyCooldown < 1000) return;
+  copyCooldown = now;
+  const code = window.getSelection()?.toString().trim();
+  if (!code || !/^[a-zA-Z0-9]{6,20}$/.test(code)) return;
+  fetch('/track-copy', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code })
+  }).then(() => {
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  });
+}); <
+/script>                cur.execute('CREATE TABLE IF NOT EXISTS codes (id SERIAL PRIMARY KEY, code TEXT UNIQUE NOT NULL, clicks INTEGER DEFAULT 0)')
             con.commit()
     except Exception as e:
         print(f"DB Init Error: {e}")
