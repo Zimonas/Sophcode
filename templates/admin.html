@@ -1,23 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-slate-50 p-4 md:p-10">
+<body class="bg-slate-50 p-6 md:p-12">
     <div class="max-w-3xl mx-auto">
         <div class="flex justify-between items-center mb-8">
-            <h1 class="text-2xl font-bold text-slate-800">Bulk Code Manager</h1>
-            <a href="/" class="text-blue-600 hover:underline">View Site</a>
+            <h1 class="text-3xl font-bold text-slate-800">Code Manager</h1>
+            <div class="space-x-4">
+                <a href="/" class="text-slate-500 hover:text-blue-600">View Site</a>
+                <a href="/logout" class="text-red-500 font-bold">Logout</a>
+            </div>
         </div>
 
-        <div class="bg-white p-6 rounded-2xl shadow-sm border mb-8">
-            <h2 class="font-bold mb-4 text-slate-700">Paste Codes (One per line)</h2>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 shadow-sm rounded-r-lg">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm border mb-10">
+            <h2 class="font-bold mb-4 text-slate-700">Bulk Import (One code per line)</h2>
             <form action="/add" method="POST">
-                <textarea name="bulk_codes" rows="6" placeholder="SOPHIA20&#10;SAVE50&#10;WELCOME10" 
-                          class="w-full border rounded-xl p-4 font-mono focus:ring-2 focus:ring-blue-500 outline-none mb-4"></textarea>
-                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition">
-                    Import All Codes
+                <textarea name="bulk_codes" rows="5" placeholder="CODE1&#10;CODE2&#10;CODE3" 
+                          class="w-full border border-slate-200 rounded-xl p-4 font-mono focus:ring-2 focus:ring-blue-500 outline-none mb-4"></textarea>
+                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-200">
+                    Import & Skip Duplicates
                 </button>
             </form>
         </div>
@@ -26,69 +39,25 @@
             <table class="w-full text-left">
                 <thead class="bg-slate-50 border-b">
                     <tr>
-                        <th class="p-4 font-bold text-slate-600">Active Promo Code</th>
-                        <th class="p-4 text-right">Action</th>
+                        <th class="p-4 font-bold text-slate-500 text-sm">ACTIVE PROMO CODES</th>
+                        <th class="p-4 text-right font-bold text-slate-500 text-sm">ACTION</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y">
+                <tbody class="divide-y divide-slate-100">
                     {% for c in codes %}
-                    <tr class="hover:bg-gray-50">
+                    <tr class="hover:bg-slate-50 transition">
                         <td class="p-4 font-mono font-bold text-blue-600">{{ c.code }}</td>
                         <td class="p-4 text-right">
-                            <a href="/delete/{{ c.id }}" class="text-red-500 hover:bg-red-50 px-3 py-1 rounded-lg transition">Delete</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-</body>
-</html>                <button type="submit" class="bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition">
-                    <i class="fas fa-plus mr-2"></i>Add to Site
-                </button>
-            </form>
-        </div>
-
-        <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
-            <table class="w-full text-left">
-                <thead class="bg-slate-50 border-b border-gray-100">
-                    <tr>
-                        <th class="p-5 font-bold text-slate-600 uppercase text-xs">Name</th>
-                        <th class="p-5 font-bold text-slate-600 uppercase text-xs">Code</th>
-                        <th class="p-5 font-bold text-slate-600 uppercase text-xs text-right">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100">
-                    {% for c in codes %}
-                    <tr class="hover:bg-gray-50 transition">
-                        <td class="p-5 font-medium text-slate-800">{{ c.name }}</td>
-                        <td class="p-5"><span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-lg font-mono font-bold">{{ c.code }}</span></td>
-                        <td class="p-5 text-right">
-                            <a href="/delete/{{ c.id }}" 
-                               onclick="return confirm('Delete this code?')"
-                               class="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded-lg text-sm font-bold transition">
-                                <i class="fas fa-trash-alt mr-1"></i> Delete
-                            </a>
+                            <a href="/delete/{{ c.id }}" onclick="return confirm('Delete?')" class="text-red-400 hover:text-red-600 font-bold">Delete</a>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
             {% if not codes %}
-            <div class="p-20 text-center text-gray-400">
-                <i class="fas fa-box-open text-5xl mb-4"></i>
-                <p>No codes found. Add your first one above!</p>
-            </div>
+            <div class="py-12 text-center text-slate-400">No active codes.</div>
             {% endif %}
         </div>
     </div>
-
-</body>
-</html>                btn.innerText = original;
-                btn.classList.replace('bg-green-600', 'bg-blue-600');
-            }, 2000);
-        }
-    </script>
 </body>
 </html>
