@@ -1,62 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-slate-50 p-6 md:p-12">
-    <div class="max-w-3xl mx-auto">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-slate-800">Code Manager</h1>
-            <div class="space-x-4">
-                <a href="/" class="text-slate-500 hover:text-blue-600">View Site</a>
-                <a href="/logout" class="text-red-500 font-bold">Logout</a>
+<body class="bg-slate-50 p-4 md:p-10 font-sans">
+    <div class="max-w-5xl mx-auto">
+        <div class="flex justify-between items-center mb-10">
+            <h1 class="text-3xl font-black text-slate-800 tracking-tight">DASHBOARD</h1>
+            <div class="flex gap-4 items-center">
+                <a href="/" class="text-slate-500 hover:text-blue-600 font-bold">Live Site</a>
+                <a href="/logout" class="bg-slate-200 px-4 py-2 rounded-lg text-sm font-bold hover:bg-red-100 hover:text-red-600 transition">Logout</a>
             </div>
         </div>
 
         {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            {% for message in messages %}
-              <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 shadow-sm rounded-r-lg">
-                {{ message }}
-              </div>
-            {% endfor %}
-          {% endif %}
+            {% if messages %}{% for m in messages %}
+                <div class="bg-blue-600 text-white p-4 rounded-xl mb-8 shadow-lg font-bold animate-bounce">{{ m }}</div>
+            {% endfor %}{% endif %}
         {% endwith %}
 
-        <div class="bg-white p-6 rounded-2xl shadow-sm border mb-10">
-            <h2 class="font-bold mb-4 text-slate-700">Bulk Import (One code per line)</h2>
-            <form action="/add" method="POST">
-                <textarea name="bulk_codes" rows="5" placeholder="CODE1&#10;CODE2&#10;CODE3" 
-                          class="w-full border border-slate-200 rounded-xl p-4 font-mono focus:ring-2 focus:ring-blue-500 outline-none mb-4"></textarea>
-                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-200">
-                    Import & Skip Duplicates
-                </button>
-            </form>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                <h2 class="text-blue-600 font-black mb-4 uppercase tracking-widest text-sm">Bulk Import</h2>
+                <form action="/add" method="POST">
+                    <textarea name="bulk_codes" rows="6" placeholder="Paste codes here&#10;One per line..." class="w-full border-2 border-slate-50 bg-slate-50 rounded-2xl p-4 font-mono focus:bg-white focus:border-blue-500 outline-none transition mb-4"></textarea>
+                    <button class="w-full bg-blue-600 text-white font-black py-4 rounded-2xl hover:bg-blue-700 transition shadow-xl shadow-blue-100">IMPORT UNIQUE</button>
+                </form>
+            </div>
+
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                <h2 class="text-red-500 font-black mb-4 uppercase tracking-widest text-sm">Bulk Remove</h2>
+                <form action="/bulk-delete" method="POST" onsubmit="return confirm('Remove these codes from the site?')">
+                    <textarea name="delete_list" rows="6" placeholder="Paste used codes here&#10;System will find and delete them..." class="w-full border-2 border-slate-50 bg-slate-50 rounded-2xl p-4 font-mono focus:bg-white focus:border-red-500 outline-none transition mb-4"></textarea>
+                    <button class="w-full bg-red-500 text-white font-black py-4 rounded-2xl hover:bg-red-600 transition shadow-xl shadow-red-100">CLEAN CODES</button>
+                </form>
+            </div>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-sm border overflow-hidden">
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
             <table class="w-full text-left">
-                <thead class="bg-slate-50 border-b">
+                <thead class="bg-slate-50/50">
                     <tr>
-                        <th class="p-4 font-bold text-slate-500 text-sm">ACTIVE PROMO CODES</th>
-                        <th class="p-4 text-right font-bold text-slate-500 text-sm">ACTION</th>
+                        <th class="p-6 text-slate-400 font-black uppercase text-xs tracking-widest">Active Code</th>
+                        <th class="p-6 text-right text-slate-400 font-black uppercase text-xs tracking-widest">Manage</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100">
+                <tbody class="divide-y divide-slate-50">
                     {% for c in codes %}
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="p-4 font-mono font-bold text-blue-600">{{ c.code }}</td>
-                        <td class="p-4 text-right">
-                            <a href="/delete/{{ c.id }}" onclick="return confirm('Delete?')" class="text-red-400 hover:text-red-600 font-bold">Delete</a>
+                    <tr class="hover:bg-slate-50/50 transition">
+                        <td class="p-6 font-mono font-bold text-lg text-slate-700">{{ c.code }}</td>
+                        <td class="p-6 text-right">
+                            <a href="/delete/{{ c.id }}" class="text-slate-300 hover:text-red-500 transition"><i class="fas fa-trash"></i></a>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            {% if not codes %}
-            <div class="py-12 text-center text-slate-400">No active codes.</div>
-            {% endif %}
         </div>
     </div>
 </body>
