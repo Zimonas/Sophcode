@@ -2,40 +2,30 @@
 <html lang="en">
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-slate-50 font-sans">
-    <div class="max-w-4xl mx-auto py-20 px-4">
-        <h1 class="text-4xl font-bold text-center text-slate-800 mb-4">Sophia Learning Promo Codes</h1>
-        <p class="text-center text-slate-500 mb-12">Save $20 on your first month with these active codes.</p>
+<body class="bg-slate-50 flex flex-col items-center py-20 px-4">
+    <h1 class="text-4xl font-black text-slate-800 mb-2 italic">SOPHIA PROMO</h1>
+    <p class="text-slate-500 mb-10">Get $20 off your first month instantly.</p>
 
-        <div class="grid gap-6">
-            {% for c in codes %}
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between hover:shadow-md transition">
-                <div>
-                    <h3 class="font-bold text-lg text-slate-800">{{ c.name }}</h3>
-                    <p class="text-green-600 font-medium">Valid for 2026</p>
-                </div>
-                <div class="flex items-center gap-4">
-                    <span class="bg-slate-100 px-4 py-2 rounded-lg font-mono text-xl font-bold text-blue-600 border border-slate-200">{{ c.code }}</span>
-                    <button onclick="copyToClipboard('{{ c.code }}', this)" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
-                        Copy
-                    </button>
-                </div>
-            </div>
-            {% endfor %}
+    <div class="w-full max-w-md space-y-4">
+        {% for c in codes %}
+        <div class="bg-white p-4 rounded-xl shadow-sm border flex justify-between items-center">
+            <span class="font-mono text-xl font-bold text-slate-800">{{ c.code }}</span>
+            <button onclick="copyBtn('{{ c.code }}', this)" class="bg-slate-900 text-white px-5 py-2 rounded-lg font-bold text-sm hover:scale-105 transition">
+                COPY
+            </button>
         </div>
+        {% endfor %}
     </div>
 
     <script>
-        function copyToClipboard(text, btn) {
+        function copyBtn(text, btn) {
             navigator.clipboard.writeText(text);
-            const original = btn.innerText;
-            btn.innerText = "Copied!";
-            btn.classList.replace('bg-blue-600', 'bg-green-600');
+            btn.innerText = "COPIED!";
+            btn.classList.replace('bg-slate-900', 'bg-green-600');
             setTimeout(() => {
-                btn.innerText = original;
-                btn.classList.replace('bg-green-600', 'bg-blue-600');
+                btn.innerText = "COPY";
+                btn.classList.replace('bg-green-600', 'bg-slate-900');
             }, 2000);
         }
     </script>
