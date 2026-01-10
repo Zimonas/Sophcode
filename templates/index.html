@@ -6,16 +6,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-50 min-h-screen flex flex-col items-center py-20 px-6">
-    <div class="text-center mb-16">
-        <h1 class="text-5xl font-black text-slate-900 mb-4 italic tracking-tight">SOPHIA CODES</h1>
-        <div class="bg-green-100 text-green-700 px-4 py-1 rounded-full text-sm font-bold inline-block uppercase tracking-wider">Verified for January 2026</div>
-    </div>
+    <h1 class="text-5xl font-black text-slate-900 mb-2 italic tracking-tight">SOPHIA CODES</h1>
+    <p class="text-slate-500 mb-12">Click to copy verified promo codes.</p>
 
     <div class="w-full max-w-md space-y-4">
         {% for c in codes %}
-        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex justify-between items-center hover:shadow-md transition group">
-            <span class="font-mono text-2xl font-black text-slate-800 tracking-tighter">{{ c.code }}</span>
-            <button onclick="copyIt('{{ c.code }}', this)" class="bg-slate-900 text-white px-8 py-3 rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-lg shadow-slate-200">
+        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex justify-between items-center hover:border-blue-300 transition group">
+            <span class="font-mono text-2xl font-black text-slate-800">{{ c.code }}</span>
+            <button onclick="copyIt('{{ c.code }}', this)" class="bg-slate-900 text-white px-8 py-3 rounded-2xl font-black text-xs hover:scale-105 active:scale-95 transition-all shadow-lg">
                 COPY
             </button>
         </div>
@@ -25,6 +23,14 @@
     <script>
         function copyIt(text, btn) {
             navigator.clipboard.writeText(text);
+            
+            // TRACKING API CALL
+            fetch('/track-copy', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({code: text})
+            });
+
             const old = btn.innerText;
             btn.innerText = "COPIED";
             btn.style.backgroundColor = "#16a34a";
