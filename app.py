@@ -4,15 +4,14 @@ from werkzeug.security import check_password_hash
 from datetime import timedelta
 
 app = Flask(__name__)
-# Stable secret key so you don't get logged out
-app.secret_key = "zemy_stable_key_123" 
+# Stable secret key for sessions
+app.secret_key = "zemy_stable_key_2026_v1" 
 app.permanent_session_lifetime = timedelta(days=7)
 
+# --- CONFIGURATION ---
 ADMIN_USER = "MasterZanix"
-# This is the FIXED hash for Simonasx18@2005
-ADMIN_PASSWORD_HASH = "scrypt:32768:8:1$mCa1VowXKLSWJEYy$45b2f9e646b1b65bb75ab849227e86018d91bb30ad6bbeab513fe2a944c5876d4e25c2e23fdffc3478b560ab43ab81966ef0eeec755b9b9c87c8d51f25219448
-"
-
+# Combined into one solid line to prevent "Invalid Credentials" errors
+ADMIN_PASSWORD_HASH = "scrypt:32768:8:1$mCa1VowXKLSWJEYy$45b2f9e646b1b65bb75ab849227e86018d91bb30ad6bbeab513fe2a944c5876d4e25c2e23fdffc3478b560ab43ab81966ef0eeec755b9b9c87c8d51f25219448"
 DATA_FILE = 'codes.json'
 
 def load_codes():
@@ -28,11 +27,11 @@ def save_codes(codes):
     with open(DATA_FILE, 'w') as f:
         json.dump(codes, f, indent=4)
 
+# --- ROUTES ---
 @app.route('/')
 def index():
     return render_template('index.html', codes=load_codes())
 
-# Changed to a secret URL so people can't find your login easily
 @app.route('/manage-zemy-codes', methods=['GET', 'POST'])
 def admin():
     if request.method == 'POST':
@@ -44,19 +43,28 @@ def admin():
             session['logged_in'] = True
             return redirect(url_for('admin'))
         else:
-            return "Invalid Credentials. <a href='/manage-zemy-codes'>Try again</a>"
+            flash("Invalid Credentials")
+            return redirect(url_for('admin'))
     
     if not session.get('logged_in'):
         return '''
-        <form method="post" style="margin-top:50px; text-align:center;">
-            <h2>Zemy Admin Login</h2>
-            <input name="username" placeholder="Username"><br><br>
-            <input name="password" type="password" placeholder="Password"><br><br>
-            <button type="submit">Login</button>
-        </form>
+        <body style="font-family:sans-serif; background:#f0f2f5; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;">
+            <form method="post" style="background:white; padding:2rem; border-radius:1rem; box-shadow:0 10px 25px rgba(0,0,0,0.1); width:300px;">
+                <h2 style="margin:0 0 1.5rem 0; color:#1e293b; text-align:center;">Zemy Admin</h2>
+                <input name="username" placeholder="Username" style="display:block; width:100%; margin-bottom:1rem; padding:0.75rem; border:1px solid #ddd; border-radius:8px; box-sizing:border-box;">
+                <input name="password" type="password" placeholder="Password" style="display:block; width:100%; margin-bottom:1.5rem; padding:0.75rem; border:1px solid #ddd; border-radius:8px; box-sizing:border-box;">
+                <button style="width:100%; padding:0.75rem; background:#2563eb; color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">Login</button>
+                <p style="text-align:center; color:red; font-size:0.8rem;">''' + (flash_msg if (flash_msg := "".join(list(session.get('_flashes', {}).values()) if '_flashes' in session else [])) else "") + '''</p>
+            </form>
+        </body>
         '''
     
     return render_template('admin.html', codes=load_codes())
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
 
 @app.route('/add', methods=['POST'])
 def add_code():
