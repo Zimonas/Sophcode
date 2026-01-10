@@ -1,40 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zemy Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-slate-50 font-sans">
-    <div class="max-w-4xl mx-auto py-20 px-4">
-        <h1 class="text-4xl font-bold text-center text-slate-800 mb-4">Sophia Learning Promo Codes</h1>
-        <p class="text-center text-slate-500 mb-12">Save $20 on your first month with these active codes.</p>
+<body class="bg-gray-50 font-sans">
 
-        <div class="grid gap-6">
-            {% for c in codes %}
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between hover:shadow-md transition">
-                <div>
-                    <h3 class="font-bold text-lg text-slate-800">{{ c.name }}</h3>
-                    <p class="text-green-600 font-medium">Valid for 2026</p>
-                </div>
-                <div class="flex items-center gap-4">
-                    <span class="bg-slate-100 px-4 py-2 rounded-lg font-mono text-xl font-bold text-blue-600 border border-slate-200">{{ c.code }}</span>
-                    <button onclick="copyToClipboard('{{ c.code }}', this)" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
-                        Copy
-                    </button>
-                </div>
+    <nav class="bg-slate-900 text-white p-4 shadow-lg">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold text-blue-400"><i class="fas fa-user-shield mr-2"></i>Zemy Admin</h1>
+            <div class="space-x-4">
+                <a href="/" class="hover:text-blue-300 transition">View Live Site</a>
+                <a href="/logout" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-sm font-bold">Logout</a>
             </div>
-            {% endfor %}
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto py-10 px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <p class="text-gray-500 text-sm font-bold uppercase">Active Codes</p>
+                <h3 class="text-4xl font-black text-slate-800">{{ codes|length }}</h3>
+            </div>
+        </div>
+
+        <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-100 mb-10">
+            <h2 class="text-2xl font-bold mb-6 text-slate-800">Add New Promo Code</h2>
+            <form action="/add" method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <input type="text" name="name" placeholder="Referrer Name (e.g. John D.)" required 
+                       class="border border-gray-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
+                <input type="text" name="code" placeholder="Promo Code (e.g. SOPHIA20)" required 
+                       class="border border-gray-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none font-mono transition">
+                <button type="submit" class="bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition">
+                    <i class="fas fa-plus mr-2"></i>Add to Site
+                </button>
+            </form>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-slate-50 border-b border-gray-100">
+                    <tr>
+                        <th class="p-5 font-bold text-slate-600 uppercase text-xs">Name</th>
+                        <th class="p-5 font-bold text-slate-600 uppercase text-xs">Code</th>
+                        <th class="p-5 font-bold text-slate-600 uppercase text-xs text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    {% for c in codes %}
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="p-5 font-medium text-slate-800">{{ c.name }}</td>
+                        <td class="p-5"><span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-lg font-mono font-bold">{{ c.code }}</span></td>
+                        <td class="p-5 text-right">
+                            <a href="/delete/{{ c.id }}" 
+                               onclick="return confirm('Delete this code?')"
+                               class="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded-lg text-sm font-bold transition">
+                                <i class="fas fa-trash-alt mr-1"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not codes %}
+            <div class="p-20 text-center text-gray-400">
+                <i class="fas fa-box-open text-5xl mb-4"></i>
+                <p>No codes found. Add your first one above!</p>
+            </div>
+            {% endif %}
         </div>
     </div>
 
-    <script>
-        function copyToClipboard(text, btn) {
-            navigator.clipboard.writeText(text);
-            const original = btn.innerText;
-            btn.innerText = "Copied!";
-            btn.classList.replace('bg-blue-600', 'bg-green-600');
-            setTimeout(() => {
-                btn.innerText = original;
+</body>
+</html>                btn.innerText = original;
                 btn.classList.replace('bg-green-600', 'bg-blue-600');
             }, 2000);
         }
