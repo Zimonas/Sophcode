@@ -1,19 +1,19 @@
-import os, json
+import os, json, time
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from werkzeug.security import check_password_hash
+from datetime import timedelta
 
 app = Flask(__name__)
-# This is a key for sessions, make it a random string
-app.secret_key = "zemy-tools-super-secret-key-2026" 
+# IMPORTANT: Use a fixed string, NOT os.urandom, so Heroku doesn't log you out on restart
+app.secret_key = "ZemyTools_Secure_2026_Key_Keep_Fixed" 
+app.permanent_session_lifetime = timedelta(days=7) # Stay logged in for a week
 
-# --- CONFIGURATION ---
 ADMIN_USER = "MasterZanix"
-
-# Use the HASH, not the generate function, so it stays permanent
+# Use the hash for 'Simonasx18@2005'
 ADMIN_PASSWORD_HASH = "scrypt:32768:8:1$C8j9m1PqR3xT5vWz$f8e912c345a67890b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4"
-
 DATA_FILE = 'codes.json'
 
+# --- HELPERS ---
 def load_codes():
     if not os.path.exists(DATA_FILE): return []
     try:
@@ -23,18 +23,55 @@ def load_codes():
 def save_codes(codes):
     with open(DATA_FILE, 'w') as f: json.dump(codes, f, indent=4)
 
+# --- ROUTES ---
 @app.route('/')
 def index():
     return render_template('index.html', codes=load_codes())
 
-@app.route('/admin', methods=['GET', 'POST'])
+# SECRET ADMIN ROUTE (Users won't find this)
+@app.route('/zemy-dashboard-control', methods=['GET', 'POST'])
 def admin():
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        
-        # This compares your typed password to the secure hash
-        if username == ADMIN_USER and check_password_hash(ADMIN_PASSWORD_HASH, password):
+        if request.form.get('username') == ADMIN_USER and \
+           check_password_hash(ADMIN_PASSWORD_HASH, request.form.get('password')):
+            session.permanent = True
+            session['logged_in'] = True
+            return redirect(url_for('admin'))
+        flash("Invalid login")
+    
+    if not session.get('logged_in'):
+        return render_template('login.html') # Create a simple login.html or use the inline one
+    
+    return render_template('admin.html', codes=load_codes())
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
+
+# --- HIDE FROM GOOGLE ---
+@app.route('/robots.txt')
+def robots():
+    return "User-agent: *\nDisallow: /zemy-dashboard-control"
+
+# --- OPERATIONS ---
+@app.route('/add', methods=['POST'])
+def add_code():
+    if not session.get('logged_in'): return redirect(url_for('admin'))
+    codes = load_codes()
+    codes.append({"id": int(time.time()), "name": request.form['name'], "code": request.form['code']})
+    save_codes(codes)
+    return redirect(url_for('admin'))
+
+@app.route('/delete/<int:id>')
+def delete_code(id):
+    if not session.get('logged_in'): return redirect(url_for('admin'))
+    codes = [c for c in load_codes() if c['id'] != id]
+    save_codes(codes)
+    return redirect(url_for('admin'))
+
+if __name__ == '__main__':
+    app.run(debug=True)        if username == ADMIN_USER and check_password_hash(ADMIN_PASSWORD_HASH, password):
             session['logged_in'] = True
             return redirect(url_for('admin'))
         else:
