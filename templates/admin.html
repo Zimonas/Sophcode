@@ -33,25 +33,10 @@ th, td { padding:10px; border-bottom:1px solid #1e293b; }
 <tr><th>Code</th><th>Clicks</th><th></th></tr>
 {% for c in codes %}
 <tr>
-<td>{{ c[1] }}</td>
-<td>{{ c[2] }}</td>
-<td>
-<form method="post" action="/delete/{{ c[0] }}" onsubmit="return confirm('Delete this code?')">
-<button class="delete">Delete</button>
-</form>
-</td>
-</tr>
-{% endfor %}
-</table>
-</div>
-
-</div>
-</body>
-</html>
 <td>{{ c.code }}</td>
 <td>{{ c.clicks }}</td>
 <td>
-<form method="post" action="/delete/{{ c.id }}" onsubmit="return confirm('Delete code?')">
+<form method="post" action="/delete/{{ c.id }}" onsubmit="return confirm('Delete this code?')">
 <button class="delete">Delete</button>
 </form>
 </td>
@@ -61,56 +46,5 @@ th, td { padding:10px; border-bottom:1px solid #1e293b; }
 </div>
 
 </div>
-</body>
-</html>
-        <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-            <table class="w-full text-left">
-                <thead class="bg-slate-50">
-                    <tr>
-                        <th class="p-6 text-slate-400 font-black uppercase text-xs">Code</th>
-                        <th class="p-6 text-slate-400 font-black uppercase text-xs">Clicks</th>
-                        <th class="p-6 text-right text-slate-400 font-black uppercase text-xs">Manage</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100">
-                    {% for c in codes %}
-                    <tr class="hover:bg-slate-50/50 transition">
-                        <td class="p-6 font-mono font-bold text-lg text-slate-700">{{ c.code }}</td>
-                        <td class="p-6"><span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-bold">{{ c.clicks|default(0) }}</span></td>
-                        <td class="p-6 text-right">
-                            <a href="/delete/{{ c.id }}" class="text-red-400 hover:text-red-600 transition"><i class="fas fa-trash"></i></a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-</body>
-</html>                </form>
-            </div>
-        </div>
-
-        <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-            <table class="w-full text-left">
-                <thead class="bg-slate-50/50">
-                    <tr>
-                        <th class="p-6 text-slate-400 font-black uppercase text-xs tracking-widest">Active Code</th>
-                        <th class="p-6 text-right text-slate-400 font-black uppercase text-xs tracking-widest">Manage</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-50">
-                    {% for c in codes %}
-                    <tr class="hover:bg-slate-50/50 transition">
-                        <td class="p-6 font-mono font-bold text-lg text-slate-700">{{ c.code }}</td>
-                        <td class="p-6 text-right">
-                            <a href="/delete/{{ c.id }}" class="text-slate-300 hover:text-red-500 transition"><i class="fas fa-trash"></i></a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
 </body>
 </html>
