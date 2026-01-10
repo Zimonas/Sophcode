@@ -48,3 +48,17 @@ th, td { padding:10px; border-bottom:1px solid #1e293b; }
 </div>
 </body>
 </html>
+<td>{{ c.clicks }}</td>
+<td>
+<form method="post" action="/delete/{{ c.id }}" onsubmit="return confirm('Delete this code?')">
+<button class="delete">Delete</button>
+</form>
+</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+</div>
+</body>
+</html>
