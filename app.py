@@ -10,7 +10,8 @@ app.permanent_session_lifetime = timedelta(days=7)
 
 ADMIN_USER = "MasterZanix"
 # This is the FIXED hash for Simonasx18@2005
-ADMIN_PASSWORD_HASH = "scrypt:32768:8:1$C8j9m1PqR3xT5vWz$f8e912c345a67890b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4"
+ADMIN_PASSWORD_HASH = "scrypt:32768:8:1$mCa1VowXKLSWJEYy$45b2f9e646b1b65bb75ab849227e86018d91bb30ad6bbeab513fe2a944c5876d4e25c2e23fdffc3478b560ab43ab81966ef0eeec755b9b9c87c8d51f25219448
+"
 
 DATA_FILE = 'codes.json'
 
