@@ -50,8 +50,11 @@ h1 {
   padding:40px 32px; 
   box-shadow:0 25px 50px -12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
   transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
+  position:relative; overflow:hidden;
 }
-.glass-card:hover { transform:translateY(-8px); border-color:rgba(59,130,246,0.6); box-shadow:0 35px 70px -15px rgba(59,130,246,0.3); }
+.glass-card::after { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:linear-gradient(45deg,transparent,rgba(59,130,246,0.05),transparent); transform:rotate(45deg); transition:all 0.6s; opacity:0; }
+.glass-card.updating::after { opacity:1; animation:shine 1s ease-out; }
+@keyframes shine { 0%{transform:translateX(-100%) translateY(-100%) rotate(45deg);} 100%{transform:translateX(100%) translateY(100%) rotate(45deg);} }
 .code-item { 
   display:flex; justify-content:space-between; align-items:center; 
   padding:24px 20px; margin-bottom:20px; 
@@ -68,11 +71,14 @@ h1 {
 }
 .code-item:hover::before { opacity:1; }
 .code-item:hover { transform:translateX(12px); background:rgba(59,130,246,0.15); }
+.code-item.updating { animation:pulse 0.6s ease-out; }
+@keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.7);} 50%{box-shadow:0 0 0 20px rgba(16,185,129,0);} }
 .code { font-family:'SF Mono',monospace; font-size:1.3em; font-weight:500; color:#f8fafc; flex:1; }
 .clicks { 
   background:linear-gradient(135deg,#10b981,#059669); 
   color:white; padding:10px 20px; border-radius:25px; 
   font-weight:600; font-size:15px; min-width:80px; text-align:center;
+  transition:all 0.3s;
 }
 .toast { 
   position:fixed; top:24px; right:24px; 
@@ -83,72 +89,77 @@ h1 {
   box-shadow:0 20px 40px rgba(16,185,129,0.3);
 }
 .toast.show { transform:translateX(0); }
+.live-indicator { position:fixed; top:24px; left:24px; background:rgba(16,185,129,0.9); color:white; padding:8px 16px; border-radius:20px; font-size:13px; font-weight:500; backdrop-filter:blur(12px); }
 @media (max-width:640px) { .code-item { flex-direction:column; gap:16px; text-align:center; } .code { font-size:1.1em; } }
 @media (max-width:480px) { .glass-card { padding:24px 20px; } }
 </style>
 </head>
 <body>
+<div class="live-indicator">🟢 Live Updates</div>
 <div class="container">
 <div class="header">
 <h1>🔑 SophCode</h1>
 <div class="notice">
-This counter shows <strong>copy attempts</strong>, not usage. Codes can be valid! ✨
+<strong>Copies tracked live</strong> — Codes can still be valid after multiple copies! ✨
 </div>
 </div>
 
-<div class="glass-card">
+<div class="glass-card" id="codes-container">
 {% if codes %}
 {% for c in codes %}
-<div class="code-item" tabindex="0" title="Click to copy">
+<div class="code-item" data-code="{{ c.code }}" data-clicks="{{ c.clicks }}" tabindex="0" title="Click to copy">
 <div class="code">{{ c.code }}</div>
-<div class="clicks">{{ c.clicks }} {{ 'copy' if c.clicks == 1 else 'copies' }}</div>
+<div class="clicks">{{ c.click|default(c.clicks) }} {{ 'copy' if c.clicks == 1 else 'copies' }}</div>
 </div>
 {% endfor %}
 {% else %}
 <div style="text-align:center; padding:60px 20px; color:#64748b;">
 <h3>🌟 No codes available</h3>
-<p>Check back soon or contact admin</p>
-<a href="/manage-zemy-codes" style="display:inline-block; margin-top:24px; padding:12px 28px; background:linear-gradient(135deg,#3b82f6,#1e40af); color:white; text-decoration:none; border-radius:16px; font-weight:600;">Admin Panel</a>
+<p>Check back soon</p>
 </div>
 {% endif %}
 </div>
 </div>
 
-<div id="toast" class="toast">✅ Code copied!</div>
+<div id="toast" class="toast">✅ Code copied! Counter updating...</div>
 
 <script>
 let copyCooldown = 0;
+const container = document.getElementById('codes-container');
+const toast = document.getElementById('toast');
+
+// Live updates via SSE
+const eventSource = new EventSource('/live-updates');
+eventSource.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  const item = container.querySelector(`[data-code="${data.code}"]`);
+  if (item) {
+    item.classList.add('updating');
+    const clicksEl = item.querySelector('.clicks');
+    clicksEl.textContent = `${data.clicks} ${data.clicks === 1 ? 'copy' : 'copies'}`;
+    setTimeout(() => item.classList.remove('updating'), 600);
+    container.parentElement.classList.add('updating');
+    setTimeout(() => container.parentElement.classList.remove('updating'), 1000);
+  }
+};
+
+// Copy handler
 document.addEventListener('copy', (e) => {
   const now = Date.now();
-  if (now - copyCooldown < 1000) return; // Debounce 1s
+  if (now - copyCooldown < 1000) return;
   copyCooldown = now;
   
   const code = window.getSelection()?.toString().trim();
-  if (!code) return;
+  if (!code || !/^[a-zA-Z0-9]{6,20}$/.test(code)) return;
   
-  // Only track if matches actual code pattern (alphanumeric, reasonable length)
-  if (/^[a-zA-Z0-9]{6,20}$/.test(code)) {
-    fetch('/track-copy', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({code})
-    }).then(() => {
-      const toast = document.getElementById('toast');
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2000);
-    }).catch(() => {});
-  }
-});
-</script>
-</body>
-</html>
-  if (code) {
-    fetch("/track-copy", {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({code})
-    }).catch(console.error);
-  }
+  fetch('/track-copy', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({code})
+  }).then(() => {
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  }).catch(() => {});
 });
 </script>
 </body>
