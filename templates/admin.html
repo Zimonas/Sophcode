@@ -3,22 +3,21 @@
 <head>
 <title>Admin Dashboard</title>
 <style>
-body { font-family: Arial; background:#0f172a; color:white; }
+body { font-family: Arial; background:#020617; color:white; }
 .container { max-width:900px; margin:40px auto; }
-.card { background:#020617; padding:20px; border-radius:12px; margin-bottom:20px; }
-textarea, input { width:100%; padding:10px; border-radius:8px; border:none; }
-button { padding:10px 15px; border:none; border-radius:8px; background:#2563eb; color:white; cursor:pointer; }
+.card { background:#0f172a; padding:20px; border-radius:12px; margin-bottom:20px; }
+textarea { width:100%; padding:10px; border-radius:8px; }
+button { padding:8px 14px; border:none; border-radius:8px; background:#2563eb; color:white; cursor:pointer; }
+.delete { background:#dc2626; }
 table { width:100%; border-collapse:collapse; }
 th, td { padding:10px; border-bottom:1px solid #1e293b; }
-.delete { background:#dc2626; }
-.small { font-size:14px; opacity:0.8; }
 </style>
 </head>
 <body>
 <div class="container">
 
 <h1>📊 SophCode Admin</h1>
-<a href="/logout" class="small">Logout</a>
+<a href="/logout">Logout</a>
 
 <div class="card">
 <h3>➕ Add Codes</h3>
@@ -29,11 +28,26 @@ th, td { padding:10px; border-bottom:1px solid #1e293b; }
 </div>
 
 <div class="card">
-<h3>📋 Active Codes</h3>
+<h3>📋 Codes</h3>
 <table>
-<tr><th>Code</th><th>Clicks</th><th>Action</th></tr>
+<tr><th>Code</th><th>Clicks</th><th></th></tr>
 {% for c in codes %}
 <tr>
+<td>{{ c[1] }}</td>
+<td>{{ c[2] }}</td>
+<td>
+<form method="post" action="/delete/{{ c[0] }}" onsubmit="return confirm('Delete this code?')">
+<button class="delete">Delete</button>
+</form>
+</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+</div>
+</body>
+</html>
 <td>{{ c.code }}</td>
 <td>{{ c.clicks }}</td>
 <td>
