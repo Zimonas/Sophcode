@@ -1,39 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<title>Admin Dashboard</title>
+<style>
+body { font-family: Arial; background:#0f172a; color:white; }
+.container { max-width:900px; margin:40px auto; }
+.card { background:#020617; padding:20px; border-radius:12px; margin-bottom:20px; }
+textarea, input { width:100%; padding:10px; border-radius:8px; border:none; }
+button { padding:10px 15px; border:none; border-radius:8px; background:#2563eb; color:white; cursor:pointer; }
+table { width:100%; border-collapse:collapse; }
+th, td { padding:10px; border-bottom:1px solid #1e293b; }
+.delete { background:#dc2626; }
+.small { font-size:14px; opacity:0.8; }
+</style>
 </head>
-<body class="bg-slate-50 p-4 md:p-10 font-sans">
-    <div class="max-w-5xl mx-auto">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-black text-slate-800">DASHBOARD</h1>
-            <a href="/logout" class="bg-red-500 text-white px-4 py-2 rounded-lg font-bold hover:bg-red-600 transition">Logout</a>
-        </div>
+<body>
+<div class="container">
 
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}{% for m in messages %}
-                <div class="bg-blue-600 text-white p-4 rounded-xl mb-8 font-bold">{{ m }}</div>
-            {% endfor %}{% endif %}
-        {% endwith %}
+<h1>📊 SophCode Admin</h1>
+<a href="/logout" class="small">Logout</a>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
-                <h2 class="text-blue-600 font-black mb-4 uppercase text-sm">Bulk Import</h2>
-                <form action="/add" method="POST">
-                    <textarea name="bulk_codes" rows="5" placeholder="Paste codes here..." class="w-full border-2 bg-slate-50 rounded-2xl p-4 font-mono mb-4 focus:bg-white focus:border-blue-500 outline-none"></textarea>
-                    <button class="w-full bg-blue-600 text-white font-black py-4 rounded-2xl hover:bg-blue-700 transition shadow-lg shadow-blue-100">IMPORT</button>
-                </form>
-            </div>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
-                <h2 class="text-red-500 font-black mb-4 uppercase text-sm">Bulk Remove</h2>
-                <form action="/bulk-delete" method="POST">
-                    <textarea name="delete_list" rows="5" placeholder="Paste used codes here..." class="w-full border-2 bg-slate-50 rounded-2xl p-4 font-mono mb-4 focus:bg-white focus:border-red-500 outline-none"></textarea>
-                    <button class="w-full bg-red-500 text-white font-black py-4 rounded-2xl hover:bg-red-600 transition shadow-lg shadow-red-100">CLEAN</button>
-                </form>
-            </div>
-        </div>
+<div class="card">
+<h3>➕ Add Codes</h3>
+<form method="post" action="/add">
+<textarea name="bulk_codes" rows="4" placeholder="One code per line"></textarea><br><br>
+<button>Add Codes</button>
+</form>
+</div>
 
+<div class="card">
+<h3>📋 Active Codes</h3>
+<table>
+<tr><th>Code</th><th>Clicks</th><th>Action</th></tr>
+{% for c in codes %}
+<tr>
+<td>{{ c.code }}</td>
+<td>{{ c.clicks }}</td>
+<td>
+<form method="post" action="/delete/{{ c.id }}" onsubmit="return confirm('Delete code?')">
+<button class="delete">Delete</button>
+</form>
+</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+</div>
+</body>
+</html>
         <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
             <table class="w-full text-left">
                 <thead class="bg-slate-50">
