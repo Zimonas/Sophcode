@@ -1,7 +1,7 @@
 import os
 import json
 import requests
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, Response
 from werkzeug.security import check_password_hash
 from datetime import timedelta
 import psycopg2
@@ -60,6 +60,28 @@ def send_tg(code: str):
     except:
         pass
 
+# --- SEO ROUTES ---
+@app.route("/robots.txt")
+def robots():
+    return Response(
+        "User-agent: *\nDisallow: /manage-zemy-codes\nDisallow: /add\nDisallow: /delete\nSitemap: https://sophiapromo.codes/sitemap.xml\n",
+        mimetype="text/plain",
+    )
+
+@app.route("/sitemap.xml")
+def sitemap():
+    # Dynamic sitemap (optional) - for now static is enough for index
+    xml = """<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://sophiapromo.codes/</loc>
+    <changefreq>hourly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
+"""
+    return Response(xml, mimetype="application/xml")
+
 # --- API (for live counters) ---
 @app.route("/api/codes")
 def api_codes():
@@ -90,8 +112,6 @@ def track_copy():
             cur.execute("UPDATE codes SET clicks = clicks + 1 WHERE code = %s", (code,))
         con.commit()
 
-    # If you only want TG when the code exists, you can check cur.rowcount,
-    # but rowcount is only valid inside the cursor context; keep it simple:
     send_tg(code)
     return "", 204
 
