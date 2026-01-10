@@ -1,44 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sophia Promo Codes 2026</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+<title>SophCode</title>
 </head>
-<body class="bg-slate-50 min-h-screen flex flex-col items-center py-20 px-6">
-    <h1 class="text-5xl font-black text-slate-900 mb-2 italic tracking-tight">SOPHIA CODES</h1>
-    <p class="text-slate-500 mb-12">Click to copy verified promo codes.</p>
+<body>
+<h2>Available Codes</h2>
+<ul>
+{% for c in codes %}
+<li>{{ c.code }} — {{ c.clicks }} uses</li>
+{% endfor %}
+</ul>
 
-    <div class="w-full max-w-md space-y-4">
-        {% for c in codes %}
-        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex justify-between items-center hover:border-blue-300 transition group">
-            <span class="font-mono text-2xl font-black text-slate-800">{{ c.code }}</span>
-            <button onclick="copyIt('{{ c.code }}', this)" class="bg-slate-900 text-white px-8 py-3 rounded-2xl font-black text-xs hover:scale-105 active:scale-95 transition-all shadow-lg">
-                COPY
-            </button>
-        </div>
-        {% endfor %}
-    </div>
-
-    <script>
-        function copyIt(text, btn) {
-            navigator.clipboard.writeText(text);
-            
-            // TRACKING API CALL
-            fetch('/track-copy', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({code: text})
-            });
-
-            const old = btn.innerText;
-            btn.innerText = "COPIED";
-            btn.style.backgroundColor = "#16a34a";
-            setTimeout(() => {
-                btn.innerText = old;
-                btn.style.backgroundColor = "#0f172a";
-            }, 2000);
-        }
-    </script>
+<script>
+document.addEventListener("copy", () => {
+  const code = window.getSelection().toString();
+  fetch("/track-copy", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({code})
+  });
+});
+</script>
 </body>
 </html>
