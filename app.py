@@ -70,7 +70,6 @@ def robots():
 
 @app.route("/sitemap.xml")
 def sitemap():
-    # Dynamic sitemap (optional) - for now static is enough for index
     xml = """<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
@@ -81,6 +80,14 @@ def sitemap():
 </urlset>
 """
     return Response(xml, mimetype="application/xml")
+
+# --- BING / INDEXNOW VERIFICATION ---
+@app.route("/2d1ffdfea36947e0b4862672c913af2f.txt")
+def bing_verify():
+    return Response(
+        "2d1ffdfea36947e0b4862672c913af2f", 
+        mimetype="text/plain"
+    )
 
 # --- API (for live counters) ---
 @app.route("/api/codes")
