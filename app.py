@@ -1,6 +1,7 @@
 import os
 import requests
-from flask import Flask, render_template, request, redirect, url_for, session
+import json
+from flask import Flask, render_template, request, redirect, url_for, session, Response
 from werkzeug.security import check_password_hash
 from datetime import timedelta
 import psycopg2
@@ -58,6 +59,38 @@ def send_tg(code):
     except:
         pass
 
+# --- LIVE UPDATES (SSE) ---
+last_event_id = 0
+
+@app.route('/live-updates')
+def live_updates():
+    def event_stream():
+        nonlocal last_event_id
+        last_id = request.args.get('last_id', last_event_id, type=int)
+        
+        while True:
+            with get_db() as con:
+                with con.cursor() as cur:
+                    cur.execute("""
+                        SELECT id, code, clicks 
+                        FROM codes 
+                        WHERE id > %s AND clicks > COALESCE((SELECT clicks FROM codes WHERE code = codes.code AND id <= %s), 0)
+                        ORDER BY id ASC LIMIT 1
+                    """, (last_id, last_id))
+                    row = cur.fetchone()
+                    
+                    if row:
+                        yield f"data: {json.dumps({'code': row['code'], 'clicks': row['clicks']})}\n\n"
+                        last_event_id = row['id']
+                        last_id = row['id']
+                    else:
+                        yield ": heartbeat\n\n"
+            
+            import time
+            time.sleep(1)
+    
+    return Response(event_stream(), mimetype="text/event-stream")
+
 # --- ROUTES ---
 @app.route("/")
 def index():
@@ -77,10 +110,11 @@ def track_copy():
     with get_db() as con:
         with con.cursor() as cur:
             cur.execute(
-                "UPDATE codes SET clicks = clicks + 1 WHERE code = %s",
+                "UPDATE codes SET clicks = clicks + 1 WHERE code = %s RETURNING id, code, clicks",
                 (code,)
             )
-            if cur.rowcount:
+            row = cur.fetchone()
+            if row:
                 send_tg(code)
 
     return "", 204
