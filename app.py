@@ -1,11 +1,11 @@
 import os
-import json
 import requests
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify, Response
-from werkzeug.security import check_password_hash
 from datetime import timedelta
+
 import psycopg2
 import psycopg2.extras
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, Response
+from werkzeug.security import check_password_hash
 
 app = Flask(__name__)
 
@@ -52,21 +52,25 @@ def send_tg(code: str):
             f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
             json={
                 "chat_id": TG_CHAT_ID,
-                "text": f"🚀 *New Copy Detected!*\n\nCode: `{code}`",
-                "parse_mode": "Markdown"
+                "text": f"New Copy Detected!\n\nCode: {code}",
             },
             timeout=5
         )
-    except:
+    except Exception:
         pass
 
 # --- SEO ROUTES ---
 @app.route("/robots.txt")
 def robots():
-    return Response(
-        "User-agent: *\nDisallow: /manage-zemy-codes\nDisallow: /add\nDisallow: /delete\nSitemap: https://sophiapromo.codes/sitemap.xml\n",
-        mimetype="text/plain",
+    # Allow crawling of public pages; block admin actions
+    txt = (
+        "User-agent: *\n"
+        "Disallow: /manage-zemy-codes\n"
+        "Disallow: /add\n"
+        "Disallow: /delete\n"
+        "Sitemap: https://sophiapromo.codes/sitemap.xml\n"
     )
+    return Response(txt, mimetype="text/plain")
 
 @app.route("/sitemap.xml")
 def sitemap():
@@ -81,13 +85,10 @@ def sitemap():
 """
     return Response(xml, mimetype="application/xml")
 
-# --- BING / INDEXNOW VERIFICATION ---
-@app.route("/2d1ffdfea36947e0b4862672c913af2f.txt")
-def bing_verify():
-    return Response(
-        "2d1ffdfea36947e0b4862672c913af2f", 
-        mimetype="text/plain"
-    )
+# --- BING / INDEXNOW VERIFICATION (use your latest key) ---
+@app.route("/39132c1aa3cb4aba94434ecf2ba2b3d1.txt")
+def indexnow_key():
+    return Response("39132c1aa3cb4aba94434ecf2ba2b3d1", mimetype="text/plain")
 
 # --- API (for live counters) ---
 @app.route("/api/codes")
