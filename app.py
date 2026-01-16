@@ -103,9 +103,9 @@ def sitemap():
 
 # --- BING INDEXNOW VERIFICATION ---
 # This serves the key file at: https://sophiapromo.codes/3d8df41a04bf46bfa12553d9e1e068d6.txt
-@app.route('/3d8df41a04bf46bfa12553d9e1e068d6.txt')
+@app.route('/4024e745f5874cd799c12a56802f6a24.txt')
 def indexnow_key():
-    return Response('3d8df41a04bf46bfa12553d9e1e068d6', mimetype='text/plain')
+    return Response('4024e745f5874cd799c12a56802f6a24', mimetype='text/plain')
 
 
 # --- API for live counters ---
