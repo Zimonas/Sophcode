@@ -178,9 +178,10 @@ def index():
 def not_working():
     return render_template('not_working.html')
 
+# UPDATED: render the NEW template filename you chose
 @app.route('/sophia-learning-vs-study-com-cost')
 def comparison():
-    return render_template('comparison.html')
+    return render_template('sophia-learning-vs-study-com.html')
 
 @app.route('/how-to-use-sophia-referral-code')
 def how_to():
