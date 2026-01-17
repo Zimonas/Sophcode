@@ -1,5 +1,7 @@
 import os
 import requests
+import secrets
+from time import time
 from datetime import timedelta, date
 import psycopg2
 import psycopg2.extras
@@ -44,7 +46,7 @@ try:
 except Exception as e:
     print(f"DB init warning: {e}")
 
-# --- GLOBAL HEADERS (SEO CACHING) ---
+# --- SEO CACHING ---
 @app.after_request
 def add_headers(response):
     if (
@@ -104,7 +106,6 @@ def sitemap():
     for p in pages:
         priority = '1.0' if p == '/' else '0.8'
         freq = 'daily' if p == '/sophia-code-stats' else 'weekly'
-
         xml.append(
             f'<url>'
             f'<loc>{base_url}{p}</loc>'
@@ -134,20 +135,21 @@ def api_codes():
     response.headers['X-Robots-Tag'] = 'noindex'
     return response
 
-# --- PUBLIC ROUTES ---
-@app.route('/')
-def index():
-    with get_db() as con:
-        with con.cursor() as cur:
-            cur.execute("SELECT id, code, clicks FROM codes ORDER BY id DESC")
-            codes = cur.fetchall()
-    return render_template('index.html', codes=codes)
+# --- RATE LIMIT (COPY TRACKING) ---
+COPY_RATE = {}
 
 @app.route('/track-copy', methods=['POST'])
 def track_copy():
+    ip = request.remote_addr
+    now = time()
+
+    if ip in COPY_RATE and now - COPY_RATE[ip] < 1.5:
+        return "", 429
+
+    COPY_RATE[ip] = now
+
     data = request.get_json(silent=True) or {}
     code = data.get('code', '').strip()
-
     if not code:
         return "", 400
 
@@ -161,6 +163,15 @@ def track_copy():
 
     send_tg_code(code)
     return "", 204
+
+# --- PUBLIC ---
+@app.route('/')
+def index():
+    with get_db() as con:
+        with con.cursor() as cur:
+            cur.execute("SELECT id, code, clicks FROM codes ORDER BY id DESC")
+            codes = cur.fetchall()
+    return render_template('index.html', codes=codes)
 
 # --- SEO PAGES ---
 @app.route('/sophia-referral-code-not-working')
@@ -209,12 +220,17 @@ def stats():
             top_code=("None", 0)
         )
 
-# --- ADMIN ---
+# --- ADMIN (CSRF + BRUTE FORCE) ---
 @app.route('/manage-zemy-codes', methods=['GET', 'POST'])
 def admin():
-    if request.method == 'POST':
-        session['attempts'] = session.get('attempts', 0) + 1
+    if not session.get('csrf'):
+        session['csrf'] = secrets.token_hex(16)
 
+    if request.method == 'POST':
+        if request.form.get('csrf') != session.get('csrf'):
+            return "Invalid CSRF token", 400
+
+        session['attempts'] = session.get('attempts', 0) + 1
         if session['attempts'] > 10:
             return "Too many attempts", 429
 
@@ -277,7 +293,4 @@ def logout():
     return redirect('/')
 
 if __name__ == "__main__":
-    app.run(
-        host='0.0.0.0',
-        port=int(os.environ.get('PORT', 5000))
-    )
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
