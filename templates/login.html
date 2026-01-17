@@ -21,6 +21,8 @@ button:hover { transform:translateY(-2px); box-shadow:0 15px 35px rgba(59,130,24
 <form method="post">
 <input name="username" placeholder="Username" required autocomplete="username">
 <input type="password" name="password" placeholder="Password" required autocomplete="current-password">
+  <input type="hidden" name="csrf" value="{{ session.csrf }}">
+
 <button type="submit">Enter Dashboard</button>
 </form>
 <p style="margin-top:24px; color:#64748b; font-size:14px;">
