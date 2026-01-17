@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>How to Use a Sophia Referral Code (2026) – Step-by-Step</title>
+  <meta name="description" content="How to use a Sophia referral code to get $20 off your first month (typically new accounts). Step-by-step instructions + common fixes if it doesn't work." />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <link rel="canonical" href="https://sophiapromo.codes/how-to-use-sophia-referral-code" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="How to Use a Sophia Referral Code (2026) – Step-by-Step" />
+  <meta property="og:description" content="Step-by-step instructions to apply a Sophia referral code at checkout, plus common reasons it fails." />
+  <meta property="og:url" content="https://sophiapromo.codes/how-to-use-sophia-referral-code" />
+  <meta name="twitter:card" content="summary" />
+
+  <!-- Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body{
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: linear-gradient(135deg, #0c0e1a 0%, #1a1f3a 50%, #0f172a 100%);
+      color:#e2e8f0;
+      min-height:100vh;
+      overflow-x:hidden;
+      position:relative;
+      line-height:1.65;
+    }
+    body::before{
+      content:'';
+      position:fixed; inset:0;
+      background:
+        radial-gradient(circle at 20% 80%, rgba(120,119,198,0.28) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255,119,198,0.22) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120,219,255,0.20) 0%, transparent 50%);
+      z-index:-1;
+      animation: shimmer 18s ease-in-out infinite;
+    }
+    @keyframes shimmer { 0%,100%{opacity:0.55;} 50%{opacity:1;} }
+
+    a { color:#60a5fa; text-decoration:none; font-weight:800; }
+    a:hover { text-decoration:underline; }
+
+    .container{ max-width:980px; margin:0 auto; padding:28px 16px 56px; position:relative; z-index:1; }
+
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; margin-bottom:18px;
+    }
+    .brand{ display:flex; align-items:center; gap:10px; font-weight:950; letter-spacing:-0.02em; }
+    .nav{ display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-end; font-size:13px; color:#cbd5e1; }
+    .nav a{ font-weight:800; color:#cbd5e1; }
+    .nav a:hover{ color:#ffffff; text-decoration:none; }
+
+    .card{
+      background: rgba(15,23,42,0.55);
+      backdrop-filter: blur(22px);
+      border-radius: 24px;
+      border: 1px solid rgba(71,85,105,0.35);
+      padding: 22px;
+      box-shadow: 0 25px 55px -18px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.08);
+      margin-bottom:18px;
+    }
+
+    h1{
+      font-size: clamp(2.0rem, 4.6vw, 2.8rem);
+      font-weight:950;
+      letter-spacing:-0.03em;
+      line-height:1.1;
+      margin-bottom:10px;
+      background: linear-gradient(135deg, #00d4ff, #5a67d8, #667eea);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+
+    .subtitle{ color:#94a3b8; font-size:1.05rem; max-width:78ch; }
+    .meta{ margin-top:10px; color:#9aa9c0; font-size:13px; font-weight:800; }
+
+    .breadcrumbs{ font-size:13px; color:#94a3b8; margin-bottom:12px; }
+    .breadcrumbs a{ color:#94a3b8; font-weight:800; }
+
+    .callout{
+      margin-top:14px;
+      padding:14px 16px;
+      border-radius:16px;
+      background: rgba(30,41,59,0.70);
+      border: 1px solid rgba(59,130,246,0.25);
+      color:#cbd5e1;
+      font-size:14px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap:18px;
+      align-items:start;
+    }
+
+    .steps{ display:grid; gap:10px; margin-top:10px; counter-reset: step; }
+    .step{
+      padding:14px 14px;
+      border-radius:16px;
+      background: rgba(30,41,59,0.45);
+      border: 1px solid rgba(71,85,105,0.22);
+      position:relative;
+    }
+    .step::before{
+      counter-increment: step;
+      content: counter(step);
+      position:absolute;
+      top:12px; left:12px;
+      width:28px; height:28px;
+      border-radius:999px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(59,130,246,0.18);
+      border: 1px solid rgba(59,130,246,0.28);
+      color:#bfdbfe;
+      font-weight:950;
+      font-size:13px;
+    }
+    .step-content{ padding-left:44px; }
+    .step h3{ font-size:1.02rem; margin-bottom:6px; letter-spacing:-0.01em; }
+    .muted{ color:#94a3b8; }
+    .small{ font-size:13px; }
+
+    .box{
+      border-radius:16px;
+      padding:14px 14px;
+      background: rgba(30,41,59,0.45);
+      border: 1px solid rgba(71,85,105,0.22);
+      margin-top:12px;
+    }
+    .box h2{ font-size:1.15rem; margin-bottom:10px; }
+
+    .faq details{
+      background: rgba(30,41,59,0.45);
+      border: 1px solid rgba(71,85,105,0.22);
+      border-radius: 16px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+    .faq summary{
+      cursor:pointer;
+      font-weight:950;
+      color:#e2e8f0;
+    }
+    .faq p{ margin-top:10px; color:#cbd5e1; }
+
+    .footer{
+      margin-top:10px;
+      padding:16px;
+      border-radius:16px;
+      background: rgba(15,23,42,0.45);
+      border: 1px solid rgba(71,85,105,0.22);
+      color:#94a3b8;
+      font-size:13px;
+    }
+
+    @media (max-width: 920px){
+      .grid{ grid-template-columns: 1fr; }
+      .nav{ justify-content:flex-start; }
+    }
+  </style>
+
+  <!-- Breadcrumb schema -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"BreadcrumbList",
+    "itemListElement":[
+      {"@type":"ListItem","position":1,"name":"Home","item":"https://sophiapromo.codes/"},
+      {"@type":"ListItem","position":2,"name":"How to use a Sophia referral code","item":"https://sophiapromo.codes/how-to-use-sophia-referral-code"}
+    ]
+  }
+  </script>
+
+  <!-- HowTo schema (MAIN) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to use a Sophia referral code",
+    "description": "Step-by-step instructions to apply a Sophia referral code at checkout. Referral discounts typically apply to new accounts and may change based on eligibility rules.",
+    "totalTime": "PT3M",
+    "estimatedCost": {
+      "@type": "MonetaryAmount",
+      "currency": "USD",
+      "value": "0"
+    },
+    "supply": [
+      { "@type": "HowToSupply", "name": "Sophia referral code" }
+    ],
+    "tool": [
+      { "@type": "HowToTool", "name": "Web browser (mobile or desktop)" }
+    ],
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Copy a referral code",
+        "text": "Copy a referral code from the list on SophiaPromo.codes.",
+        "url": "https://sophiapromo.codes/#codes"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Start Sophia checkout",
+        "text": "Go to Sophia.org, create a new account (if required), and begin the membership checkout flow."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Enter the referral code",
+        "text": "Find the promo/referral input field during checkout and paste the referral code."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Confirm the discount",
+        "text": "Verify the discount is applied before completing payment. If it doesn’t apply, try another code or review common fixes."
+      }
+    ]
+  }
+  </script>
+
+  <!-- FAQ schema (optional but good) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {
+        "@type":"Question",
+        "name":"Where do I enter a Sophia referral code?",
+        "acceptedAnswer":{
+          "@type":"Answer",
+          "text":"During checkout, look for a promo/referral field and paste the code there. The placement can vary depending on device and checkout updates."
+        }
+      },
+      {
+        "@type":"Question",
+        "name":"Do Sophia referral codes work for existing members?",
+        "acceptedAnswer":{
+          "@type":"Answer",
+          "text":"Usually no. Referral discounts are typically intended for new accounts. If you already have a membership, the code may not apply."
+        }
+      },
+      {
+        "@type":"Question",
+        "name":"Why is my referral code not working?",
+        "acceptedAnswer":{
+          "@type":"Answer",
+          "text":"Common reasons include: the account already existed, eligibility rules changed, or the code is no longer eligible. Try another code and review troubleshooting steps."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <span aria-hidden="true">🧾</span>
+        <span>SophCode</span>
+      </div>
+
+      <nav class="nav" aria-label="Site">
+        <a href="/">Home</a>
+        <a href="/sophia-referral-code-not-working">Not working?</a>
+        <a href="/sophia-referral-code-existing-members">Existing members</a>
+        <a href="/sophia-official-promo-codes">Official promos</a>
+      </nav>
+    </div>
+
+    <div class="card">
+      <div class="breadcrumbs">
+        <a href="/">Home</a> <span aria-hidden="true">›</span> How to use a Sophia referral code
+      </div>
+
+      <h1>How to use a Sophia referral code</h1>
+      <p class="subtitle">
+        Follow these steps to apply a <strong>Sophia referral code</strong> at checkout.
+        Referral discounts are typically meant for <strong>new accounts</strong> and can change based on eligibility rules.
+      </p>
+
+      <div class="meta">
+        Updated: <strong>2026</strong> · Time needed: <strong>~3 minutes</strong>
+      </div>
+
+      <div class="callout">
+        Want to try a code right now? Go to the
+        <a href="/#codes">Sophia referral codes list</a>.
+        If your code fails, see
+        <a href="/sophia-referral-code-not-working">why codes don’t work</a>.
+      </div>
+    </div>
+
+    <div class="grid">
+      <main class="card" id="steps">
+        <h2 style="font-size:1.25rem;margin-bottom:10px;">Step-by-step</h2>
+
+        <div class="steps">
+          <section class="step">
+            <div class="step-content">
+              <h3>Copy a referral code</h3>
+              <p class="muted">
+                Copy a code from our homepage list. If you’re unsure which to use, start with a code that has a lower copy count.
+              </p>
+              <p class="small muted" style="margin-top:8px;">
+                Go here: <a href="/#codes">Referral codes list</a>
+              </p>
+            </div>
+          </section>
+
+          <section class="step">
+            <div class="step-content">
+              <h3>Start Sophia checkout</h3>
+              <p class="muted">
+                Visit Sophia.org, create an account if needed, then start the membership checkout flow.
+                Referral discounts commonly apply to new accounts.
+              </p>
+            </div>
+          </section>
+
+          <section class="step">
+            <div class="step-content">
+              <h3>Paste the referral code</h3>
+              <p class="muted">
+                In checkout, look for a promo/referral field and paste your code.
+                On mobile, it may appear after you expand an “Add promo code” or similar section.
+              </p>
+            </div>
+          </section>
+
+          <section class="step">
+            <div class="step-content">
+              <h3>Confirm the discount before paying</h3>
+              <p class="muted">
+                Make sure the discount is applied on the order summary before completing payment.
+                If it doesn’t apply, try a different code and check troubleshooting.
+              </p>
+              <p class="small muted" style="margin-top:8px;">
+                Troubleshoot: <a href="/sophia-referral-code-not-working">Referral code not working</a>
+              </p>
+            </div>
+          </section>
+        </div>
+
+        <div class="box">
+          <h2>Fast fixes if it doesn’t work</h2>
+          <ul class="muted" style="padding-left:18px;">
+            <li><strong>Try a different code</strong> (some stop being eligible)</li>
+            <li><strong>Confirm you’re a new user</strong> (existing accounts often won’t qualify)</li>
+            <li><strong>Use a private window</strong> and retry checkout</li>
+            <li><strong>Switch devices</strong> (mobile vs desktop sometimes changes the checkout UI)</li>
+          </ul>
+        </div>
+      </main>
+
+      <aside class="card">
+        <h2 style="font-size:1.25rem;margin-bottom:10px;">Quick answers</h2>
+
+        <div class="box">
+          <h2>Does it work for existing members?</h2>
+          <p class="muted">
+            Usually no. Referral discounts are typically intended for new accounts.
+            See: <a href="/sophia-referral-code-existing-members">Existing members guide</a>.
+          </p>
+        </div>
+
+        <div class="box">
+          <h2>Referral vs official promo</h2>
+          <p class="muted">
+            Official promos are run by Sophia directly and may be limited-time. Referral codes are shared by users.
+            See: <a href="/sophia-official-promo-codes">Official promo codes</a>.
+          </p>
+        </div>
+
+        <div class="box">
+          <h2>Best next step</h2>
+          <p class="muted">
+            If you just want to try codes quickly:
+            <a href="/#codes">Go back to the codes list</a>.
+          </p>
+        </div>
+
+        <div class="footer">
+          <strong>Transparency:</strong> SophCode is independent and not affiliated with Sophia Learning.
+          Discounts and eligibility rules can change, so always confirm the final price at checkout.
+        </div>
+      </aside>
+    </div>
+
+    <section class="card faq" id="faq">
+      <h2 style="font-size:1.25rem;margin-bottom:10px;">FAQ</h2>
+
+      <details>
+        <summary>Where do I enter a Sophia referral code?</summary>
+        <p>During checkout, look for a promo/referral field and paste the code there. The placement can vary based on device and checkout updates.</p>
+      </details>
+
+      <details>
+        <summary>Do referral codes work for existing members?</summary>
+        <p>Usually no. Referral discounts are typically intended for new accounts. If you already have a membership, the code may not apply.</p>
+      </details>
+
+      <details>
+        <summary>Why is my referral code not working?</summary>
+        <p>Common reasons include: the account already existed, eligibility rules changed, or the code is no longer eligible. Try another code and review the troubleshooting guide.</p>
+      </details>
+
+      <details>
+        <summary>What should I do if the discount doesn’t apply?</summary>
+        <p>Try a different code, confirm you’re a new account, and check the troubleshooting page: <a href="/sophia-referral-code-not-working">Referral code not working</a>.</p>
+      </details>
+    </section>
+  </div>
+</body>
+</html>
